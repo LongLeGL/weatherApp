@@ -26,7 +26,9 @@ export default {
   },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ["@/plugins/antd-ui"],
+  plugins: [
+    "@/plugins/antd-ui", 
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -38,7 +40,7 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/tailwindcss"],
+  modules: ["@nuxtjs/tailwindcss", '@nuxtjs/axios'],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

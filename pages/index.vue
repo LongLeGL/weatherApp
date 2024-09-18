@@ -4,6 +4,10 @@
     <LocationSetter />
     <DailyWeatherCard />
     <HourlyWeatherCard />
+    <div>
+      <h1>Fetched Weather data:</h1>
+      <div>{{ weatherData }}</div>
+    </div>
   </div>
 </template>
 
@@ -14,5 +18,29 @@ import LocationSetter from "../components/LocationSetter.vue";
 
 export default {
   name: "IndexPage",
+  data() {
+    return {
+      selectedDateIdx: 0,
+    };
+  },
+  computed: {
+    weatherData() {
+      return this.$store.state.weatherData;
+    },
+  },
+  mounted() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        console.log(
+          "Got user's location:",
+          pos.coords.latitude + " - " + pos.coords.longitude
+        );
+        this.$store.commit('setLocation', {
+          lat: pos.coords.latitude,
+          long: pos.coords.longitude
+        });
+      });
+    }
+  },
 };
 </script>
