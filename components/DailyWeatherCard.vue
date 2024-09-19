@@ -3,60 +3,57 @@
     <div>
       <h3>Current weather</h3>
       <span v-if="currTime">{{ currTime }}</span>
-      <div class="flex">
+      <div class="flex gap-6">
         <div>
-          <span>Weather icon image</span>
-          <span>{{ todayWeather.temperature_2m }} °C</span>
+          <WeatherIcon :wcode="todayWeather.weather_code" :size="'4x'"/>
+          <span>{{ todayWeatherCond }}</span>
         </div>
+
         <div>
-          <div>Weather condition</div>
-          <div>
-            <span>Feels like 30 °C</span>
-            <span>({{ todayWeather.relative_humidity_2m }}%)</span>
-          </div>
+          <span>
+            <font-awesome-icon :icon="['fas', 'temperature-three-quarters']" />
+            {{ todayWeather.temperature_2m }}°C
+          </span>
+          <span>
+            (<font-awesome-icon :icon="['fas', 'droplet']" />
+            {{ todayWeather.relative_humidity_2m }}%)
+          </span>
+          <div>Feels like {{ todayWeather.apparent_temperature }} °C</div>
         </div>
       </div>
     </div>
-    
-    <div class="flex">
-      <div>
-        <div>Thur, 20/9/2024</div>
-        <div>Weather icon</div>
-        <div>Temp_min - Temp-max</div>
-      </div>
-      <div>
-        <div>Thur, 21/9/2024</div>
-        <div>Weather icon</div>
-        <div>Temp_min - Temp-max</div>
-      </div>
-      <div>
-        <div>Thur, 22/9/2024</div>
-        <div>Weather icon</div>
-        <div>Temp_min - Temp-max</div>
-      </div>
-      <div>
-        <div>Thur, 23/9/2024</div>
-        <div>Weather icon</div>
-        <div>Temp_min - Temp-max</div>
+
+    <div class="flex gap-4">
+      <div <div v-for="day in dailyWeather" :key="day.time" class="flex flex-col items-center">
+        <div>{{ day.time }}</div>
+        <div><WeatherIcon :wcode="day.weatherCode"/></div>
+        <div>{{ day.minTemp }}°C - {{ day.maxTemp }}°C</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    computed: {
-      currTime(){
-        let currDate = new Date();
-        return `${String(currDate.getHours()).padStart(2, '0')}:${String(currDate.getMinutes()).padStart(2, '0')}`;
-      },
-      todayWeather(){
-        return this.$store.state.weatherData.current;
-      },
+import WeatherIcon from "./WeatherIcon.vue";
+import mapWcodeWcond from "../lib/mapWcodeIcon";
+
+export default {
+  computed: {
+    currTime() {
+      let currDate = new Date();
+      return `${String(currDate.getHours()).padStart(2, "0")}:${String(currDate.getMinutes()).padStart(2, "0")}  ${currDate.getDate()}/${currDate.getMonth()}/${currDate.getFullYear()}`;
     },
-  }
+    todayWeather() {
+      return this.$store.state.todayWeatherData;
+    },
+    todayWeatherCond(){
+      return mapWcodeWcond(this.todayWeather.weather_code);
+    },
+    dailyWeather(){
+      return this.$store.state.dailyWeatherData;
+    }
+  },
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

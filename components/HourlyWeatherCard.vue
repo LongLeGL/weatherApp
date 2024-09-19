@@ -1,24 +1,30 @@
 <template>
   <div>
     <h1>Hourly Weathers</h1>
-    <div class="flex justify-between border-b-2">
+    <div v-for="hourWeather in hourlyData" :key="hourWeather.time" class="flex justify-between border-b-2">
       <div>
-        <span>14:00</span>
-        <span>Weather Icon</span>
-        <span>23°C</span>
+        <span>{{ hourWeather.time }}</span>
+        <WeatherIcon :wcode="hourWeather.weatherCode"/>
+        <span>{{ hourWeather.temp }}°C</span>
       </div>
       <div>
-        <span>55%</span>
-        <span>Feels like 28°C</span>
+        <span>{{ hourWeather.humidity }}%</span>
+        <span>Feels like {{ hourWeather.apparentTemp }}°C</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    
+import WeatherIcon from './WeatherIcon.vue';
+
+export default {
+  computed: {
+    hourlyData(){
+      return this.$store.state.hourlyWeatherData;
+    }
   }
+}
 </script>
 
 <style lang="scss" scoped>

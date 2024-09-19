@@ -4,10 +4,6 @@
     <LocationSetter />
     <DailyWeatherCard />
     <HourlyWeatherCard />
-    <div>
-      <h1>Fetched Weather data:</h1>
-      <div>{{ weatherData }}</div>
-    </div>
   </div>
 </template>
 

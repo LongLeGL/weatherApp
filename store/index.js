@@ -4,6 +4,9 @@ export const state = () => ({
     long: 106.7,
   },
   weatherData: {},
+  todayWeatherData: {},
+  dailyWeatherData: [],
+  hourlyWeatherData: [],
 });
 
 export const getters = {
@@ -14,6 +17,10 @@ export const getters = {
   getWeather(state) {
     return state.weatherData;
   },
+
+  getTodayWeather(state){
+    return state.todayWeatherData;
+  },
 };
 
 export const mutations = {
@@ -23,7 +30,19 @@ export const mutations = {
 
   setWeatherData(state, newData){
     state.weatherData = newData;
-  }
+  },
+
+  setTodayWeatherData(state, newData){
+    state.todayWeatherData = newData;
+  },
+
+  setDailyWeatherData(state, newData){
+    state.dailyWeatherData = newData;
+  },
+
+  setHourlyWeatherData(state, newData){
+    state.hourlyWeatherData = newData;
+  },
 };
 
 export const actions = {
@@ -34,6 +53,9 @@ export const actions = {
       )
       .then(res => {
         commit('setWeatherData', res.data);
+        commit('setTodayWeatherData', res.data.current);
+        commit('setDailyWeatherData', extractDailyForecast(res.data.daily));
+        commit('setHourlyWeatherData', extractHourlyForecast(res.data.hourly));
         resolve();
       })
       .catch(e => {
@@ -43,3 +65,30 @@ export const actions = {
     })
   },
 };
+
+function extractDailyForecast({time, temperature_2m_min, temperature_2m_max, weather_code}){
+  let dailyData = time.map((date, index) => {
+    return {
+      time: date.split('-').reverse().join('/'),      // convert yyyy-mm-dd to dd/mm/yyyy
+      minTemp: temperature_2m_min[index],
+      maxTemp: temperature_2m_max[index],
+      weatherCode: weather_code[index]
+    }
+  })
+
+  return dailyData;
+}
+
+function extractHourlyForecast({time, temperature_2m, relative_humidity_2m, apparent_temperature, weather_code}){
+  let dailyData = time.map((date, index) => {
+    return {
+      time: date.split('-').reverse().join('/'),      // convert yyyy-mm-dd to dd/mm/yyyy
+      temp: temperature_2m[index],
+      humidity: relative_humidity_2m[index],
+      apparentTemp: apparent_temperature[index],
+      weatherCode: weather_code[index]
+    }
+  })
+
+  return dailyData;
+}
