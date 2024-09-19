@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="py-5 px-20">
-        <h1 class="text-2xl font-bold my-2">Hourly Weathers</h1>
+        <h1 class="text-2xl font-bold my-2">Hourly Weather Forecasts</h1>
 
         <!-- Divs version -->
         <div
@@ -77,9 +77,10 @@ export default {
       return this.$store.state.fetchingWeather;
     },
     bgStyle() {
+      let weatherName = mapWcodeWcond(this.currentWeatherData.weather_code);
       return {
         backgroundImage: `url(${require(`~/assets/weatherImg/${
-          "Sunny" + ".jpg"
+          weatherName + ".jpg"
         }`)})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
