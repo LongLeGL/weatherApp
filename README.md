@@ -1,2 +1,2 @@
 # weatherApp
-Gh page deploy link: https://longlegl.github.io/weatherApp/
+Deploy link: https://weather-app-longles-projects-76e96fba.vercel.app/
